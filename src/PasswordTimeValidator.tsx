@@ -21,7 +21,6 @@ export function PasswordTimeValidator({ password, createdAt, onValidate }: Passw
       return elapsed;
     };
 
-    // Run immediately
     const initialElapsed = updateTime();
 
     if (initialElapsed >= 5000) {
@@ -53,21 +52,30 @@ export function PasswordTimeValidator({ password, createdAt, onValidate }: Passw
   const seconds = (elapsedTime / 1000).toFixed(1);
 
   return (
-    <div style={{ marginTop: '10px', padding: '10px', border: '1px solid var(--border)', borderRadius: '4px', width: '350px', textAlign: 'left' }}>
-      <strong>Časový validátor:</strong>
-      <div>
-        Čas zadávání: <span id="elapsed-time" style={{ fontWeight: 'bold' }}>{seconds} s</span> (limit: 5.0 s)
+    <div className="card custom-card w-100">
+      <div className="card-body p-3">
+        <div className="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 className="mb-0 fw-bold">Časový validátor</h6>
+            <small className="text-muted">Čas zadávání: <strong id="elapsed-time">{seconds} s</strong> (limit 5.0 s)</small>
+          </div>
+          {password && (
+            <span className={`badge ${isValid ? 'bg-success' : 'bg-danger'}`}>
+              {isValid ? '✔ Bezpečné' : '✘ Rychlé'}
+            </span>
+          )}
+        </div>
+        {password && !isValid && (
+          <div id="time-warning" className="text-danger fw-semibold mt-2" style={{ fontSize: '13px' }}>
+            ⚠️ Zadáno příliš rychle (možný automatický vstup)!
+          </div>
+        )}
+        {password && isValid && (
+          <div id="time-success" className="text-success fw-semibold mt-2" style={{ fontSize: '13px' }}>
+            ✔ Zadáno manuálně a bezpečně.
+          </div>
+        )}
       </div>
-      {password && !isValid && (
-        <div id="time-warning" style={{ color: '#ef4444', marginTop: '5px', fontWeight: 'bold' }}>
-          ⚠️ Varování: Zadáno příliš rychle (možné automatické generování)!
-        </div>
-      )}
-      {password && isValid && (
-        <div id="time-success" style={{ color: '#10b981', marginTop: '5px' }}>
-          ✔ Zadáno bezpečně (manuální tempo)
-        </div>
-      )}
     </div>
   );
 }

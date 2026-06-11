@@ -34,67 +34,65 @@ export function PasswordStrength({ password }: PasswordStrengthProps) {
   const metCount = results.filter((r) => r.met).length;
 
   let strengthLabel = 'Slabé';
-  let barColor = '#ef4444'; // Red
+  let barColorClass = 'bg-danger';
+  let customStyle = {};
 
   if (metCount >= 4) {
     strengthLabel = 'Silné';
-    barColor = '#10b981'; // Green
+    // Use custom style utilizing --primary-color so changing it alters the strength bar!
+    barColorClass = '';
+    customStyle = { backgroundColor: 'var(--primary-color)' };
   } else if (metCount >= 2) {
     strengthLabel = 'Střední';
-    barColor = '#f59e0b'; // Orange
+    barColorClass = 'bg-warning';
   }
 
   const fillPercent = (metCount / criteria.length) * 100;
 
   return (
-    <div style={{ marginTop: '20px' }}>
-      <div>
-        <strong>Síla hesla: </strong>
-        <span id="strength-label" style={{ color: barColor, fontWeight: 'bold' }}>
-          {strengthLabel}
-        </span>
-      </div>
-
-      <div
-        id="strength-bar-container"
-        style={{
-          height: '8px',
-          backgroundColor: 'var(--border)',
-          borderRadius: '4px',
-          margin: '10px auto',
-          width: '200px',
-          overflow: 'hidden',
-        }}
-      >
-        <div
-          id="strength-bar"
-          style={{
-            height: '100%',
-            width: `${fillPercent}%`,
-            backgroundColor: barColor,
-            transition: 'width 0.3s ease-in-out',
-          }}
-        />
-      </div>
-
-      <ul style={{ listStyleType: 'none', padding: 0, textAlign: 'left', maxWidth: '350px', margin: '20px auto' }}>
-        {results.map((r) => (
-          <li
-            key={r.id}
-            id={`criterion-${r.id}`}
-            style={{
-              color: r.met ? '#10b981' : '#ef4444',
-              marginBottom: '5px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
+    <div className="card mt-4 custom-card">
+      <div className="card-body">
+        <div className="d-flex justify-content-between align-items-center mb-2">
+          <span className="fw-semibold">Síla hesla:</span>
+          <span
+            id="strength-label"
+            className={`badge fw-bold px-2 py-1 ${metCount >= 4 ? '' : (metCount >= 2 ? 'bg-warning text-dark' : 'bg-danger')}`}
+            style={metCount >= 4 ? { backgroundColor: 'var(--primary-color)', color: '#fff' } : {}}
           >
-            <span>{r.met ? '✔' : '✘'}</span>
-            <span>{r.label}</span>
-          </li>
-        ))}
-      </ul>
+            {strengthLabel}
+          </span>
+        </div>
+
+        <div className="progress mb-4" style={{ height: '10px' }}>
+          <div
+            id="strength-bar"
+            className={`progress-bar ${barColorClass}`}
+            role="progressbar"
+            style={{
+              width: `${fillPercent}%`,
+              transition: 'width 0.3s ease-in-out',
+              ...customStyle,
+            }}
+            aria-valuenow={fillPercent}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          />
+        </div>
+
+        <ul className="list-group list-group-flush bg-transparent">
+          {results.map((r) => (
+            <li
+              key={r.id}
+              id={`criterion-${r.id}`}
+              className="list-group-item bg-transparent d-flex align-items-center gap-2 border-0 px-0 py-2"
+              style={{ color: r.met ? 'var(--primary-color)' : '#ef4444' }}
+            >
+              <span className="fw-bold">{r.met ? '✔' : '✘'}</span>
+              <span>{r.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

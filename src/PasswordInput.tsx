@@ -9,20 +9,22 @@ export function PasswordInput({ password, setPassword }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div style={{ marginBottom: '15px' }}>
-      <label htmlFor="password-input" style={{ display: 'block', marginBottom: '5px' }}>
+    <div className="mb-3">
+      <label htmlFor="password-input" className="form-label fw-semibold">
         Heslo:
       </label>
-      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+      <div className="input-group">
         <input
           id="password-input"
           type={showPassword ? 'text' : 'password'}
+          className="form-control form-control-custom"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Zadejte heslo"
         />
         <button
           id="toggle-visibility-btn"
+          className="btn btn-primary-custom"
           type="button"
           onClick={() => setShowPassword(!showPassword)}
         >

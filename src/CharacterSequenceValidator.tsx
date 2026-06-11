@@ -35,13 +35,15 @@ export function CharacterSequenceValidator({ password, onValidate }: CharacterSe
   }, [isValid, count, onValidate]);
 
   return (
-    <div style={{ marginTop: '10px', padding: '10px', border: '1px solid var(--border)', borderRadius: '4px', width: '350px', textAlign: 'left' }}>
-      <strong>Sekvenční validátor:</strong>
-      <div>
-        Nalezené sekvence: <span id="sequence-count" style={{ fontWeight: 'bold' }}>{count}</span>
-      </div>
-      <div style={{ color: isValid ? '#10b981' : '#ef4444', marginTop: '5px' }}>
-        Status: {isValid ? '✔ Splněno' : '✘ Nesplněno'}
+    <div className="card custom-card w-100">
+      <div className="card-body p-3 d-flex justify-content-between align-items-center">
+        <div>
+          <h6 className="mb-0 fw-bold">Sekvenční validátor</h6>
+          <small className="text-muted">Počet sekvencí: <strong id="sequence-count">{count}</strong></small>
+        </div>
+        <span className={`badge ${isValid ? 'bg-success' : 'bg-danger'}`}>
+          {isValid ? '✔ Splněno' : '✘ Nesplněno'}
+        </span>
       </div>
     </div>
   );

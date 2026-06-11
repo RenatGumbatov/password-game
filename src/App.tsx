@@ -3,6 +3,7 @@ import { PasswordInput } from './PasswordInput'
 import { PasswordStrength } from './PasswordStrength'
 import { CharacterSequenceValidator } from './CharacterSequenceValidator'
 import { PasswordTimeValidator } from './PasswordTimeValidator'
+import './App.css'
 
 function App() {
   const [password, setPassword] = useState('')
@@ -20,26 +21,34 @@ function App() {
   }
 
   return (
-    <div style={{ padding: '40px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <h1>Validátor síly hesla</h1>
-      <PasswordInput password={password} setPassword={handlePasswordChange} />
+    <div className="container py-5 d-flex flex-column align-items-center min-vh-100 justify-content-center">
+      <div className="card custom-card w-100" style={{ maxWidth: '500px' }}>
+        <div className="card-body p-4">
+          <h2 className="card-title text-center mb-4 text-primary-custom fw-bold">Validátor síly hesla</h2>
+          
+          <PasswordInput password={password} setPassword={handlePasswordChange} />
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center', width: '100%' }}>
-        <CharacterSequenceValidator password={password} onValidate={setSequenceResult} />
-        <PasswordTimeValidator password={password} createdAt={createdAt} onValidate={setTimeResult} />
-      </div>
+          <div className="d-flex flex-column gap-3 my-4">
+            <CharacterSequenceValidator password={password} onValidate={setSequenceResult} />
+            <PasswordTimeValidator password={password} createdAt={createdAt} onValidate={setTimeResult} />
+          </div>
 
-      <PasswordStrength password={password} />
+          <PasswordStrength password={password} />
 
-      <div style={{ marginTop: '20px', fontSize: '14px', borderTop: '1px solid var(--border)', paddingTop: '10px', width: '350px', textAlign: 'left' }}>
-        <strong>Parent App Metrics (Objekty z komponent):</strong>
-        <pre style={{ fontSize: '11px', margin: '5px 0' }}>
-          {JSON.stringify({ sequenceResult, timeResult }, null, 2)}
-        </pre>
+          <div className="card metrics-panel mt-4">
+            <div className="card-body p-3">
+              <h6 className="card-subtitle mb-2 text-muted fw-bold">Parent App Metrics:</h6>
+              <pre className="mb-0 text-start" style={{ fontSize: '11px', overflowX: 'auto' }}>
+                {JSON.stringify({ sequenceResult, timeResult }, null, 2)}
+              </pre>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
 
 export default App
+
 
