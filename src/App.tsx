@@ -3,6 +3,7 @@ import { PasswordInput } from './PasswordInput'
 import { PasswordStrength } from './PasswordStrength'
 import { CharacterSequenceValidator } from './CharacterSequenceValidator'
 import { PasswordTimeValidator } from './PasswordTimeValidator'
+import { CountryFlagValidator } from './CountryFlagValidator'
 import './App.css'
 
 function evaluatePassword(password: string): string {
@@ -22,6 +23,7 @@ function App() {
   const [sequenceResult, setSequenceResult] = useState({ isValid: false, count: 0 })
   const [timeResult, setTimeResult] = useState({ isValid: false, elapsedTime: 0 })
   const [passwordStrength, setPasswordStrength] = useState('Slabé')
+  const [countryResult, setCountryResult] = useState({ isValid: false, selectedCountry: '' })
 
   useEffect(() => {
     const strength = evaluatePassword(password);
@@ -74,6 +76,7 @@ function App() {
           <div className="d-flex flex-column gap-3 my-4">
             <CharacterSequenceValidator password={password} onValidate={setSequenceResult} />
             <PasswordTimeValidator password={password} createdAt={createdAt} onValidate={setTimeResult} />
+            <CountryFlagValidator password={password} onValidate={setCountryResult} />
           </div>
 
           <PasswordStrength password={password} strength={passwordStrength} />
@@ -82,7 +85,7 @@ function App() {
             <div className="card-body p-3">
               <h6 className="card-subtitle mb-2 text-muted fw-bold">Parent App Metrics:</h6>
               <pre className="mb-0 text-start" style={{ fontSize: '11px', overflowX: 'auto' }}>
-                {JSON.stringify({ sequenceResult, timeResult, passwordStrength }, null, 2)}
+                {JSON.stringify({ sequenceResult, timeResult, passwordStrength, countryResult }, null, 2)}
               </pre>
             </div>
           </div>
