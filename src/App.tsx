@@ -28,6 +28,10 @@ function App() {
     setPasswordStrength(strength);
   }, [password]);
 
+  useEffect(() => {
+    document.title = `Síla hesla: ${passwordStrength}`;
+  }, [passwordStrength]);
+
   const handlePasswordChange = (newPassword: string) => {
     setPassword(newPassword)
     if (newPassword && !password) {
