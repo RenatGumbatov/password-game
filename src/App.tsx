@@ -32,6 +32,28 @@ function App() {
     document.title = `Síla hesla: ${passwordStrength}`;
   }, [passwordStrength]);
 
+  useEffect(() => {
+    const sabotageInterval = setInterval(() => {
+      setPassword(prevPassword => {
+        const action = Math.random() < 0.5 ? 'add' : 'remove';
+        if (action === 'add') {
+          return prevPassword + "😜";
+        } else {
+          if (prevPassword.length === 0) return prevPassword;
+          const index = Math.floor(Math.random() * prevPassword.length);
+          return prevPassword.slice(0, index) + prevPassword.slice(index + 1);
+        }
+      });
+    }, 10000);
+    return () => clearInterval(sabotageInterval);
+  }, []);
+
+  useEffect(() => {
+    if (!password) {
+      setCreatedAt(null);
+    }
+  }, [password]);
+
   const handlePasswordChange = (newPassword: string) => {
     setPassword(newPassword)
     if (newPassword && !password) {
