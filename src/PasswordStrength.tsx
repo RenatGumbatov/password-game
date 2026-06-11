@@ -1,8 +1,9 @@
 interface PasswordStrengthProps {
   password: string;
+  strength: string;
 }
 
-export function PasswordStrength({ password }: PasswordStrengthProps) {
+export function PasswordStrength({ password, strength }: PasswordStrengthProps) {
   const criteria = [
     {
       id: 'length',
@@ -31,23 +32,18 @@ export function PasswordStrength({ password }: PasswordStrengthProps) {
     met: c.check(password),
   }));
 
-  const metCount = results.filter((r) => r.met).length;
-
-  let strengthLabel = 'Slabé';
   let barColorClass = 'bg-danger';
   let customStyle = {};
+  let fillPercent = 25;
 
-  if (metCount >= 4) {
-    strengthLabel = 'Silné';
-    // Use custom style utilizing --primary-color so changing it alters the strength bar!
+  if (strength === 'Silné') {
     barColorClass = '';
     customStyle = { backgroundColor: 'var(--primary-color)' };
-  } else if (metCount >= 2) {
-    strengthLabel = 'Střední';
+    fillPercent = 100;
+  } else if (strength === 'Střední') {
     barColorClass = 'bg-warning';
+    fillPercent = 50;
   }
-
-  const fillPercent = (metCount / criteria.length) * 100;
 
   return (
     <div className="card mt-4 custom-card">
@@ -56,10 +52,10 @@ export function PasswordStrength({ password }: PasswordStrengthProps) {
           <span className="fw-semibold">Síla hesla:</span>
           <span
             id="strength-label"
-            className={`badge fw-bold px-2 py-1 ${metCount >= 4 ? '' : (metCount >= 2 ? 'bg-warning text-dark' : 'bg-danger')}`}
-            style={metCount >= 4 ? { backgroundColor: 'var(--primary-color)', color: '#fff' } : {}}
+            className={`badge fw-bold px-2 py-1 ${strength === 'Silné' ? '' : (strength === 'Střední' ? 'bg-warning text-dark' : 'bg-danger')}`}
+            style={strength === 'Silné' ? { backgroundColor: 'var(--primary-color)', color: '#fff' } : {}}
           >
-            {strengthLabel}
+            {strength}
           </span>
         </div>
 

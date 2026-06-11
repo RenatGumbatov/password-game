@@ -1,15 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PasswordInput } from './PasswordInput'
 import { PasswordStrength } from './PasswordStrength'
 import { CharacterSequenceValidator } from './CharacterSequenceValidator'
 import { PasswordTimeValidator } from './PasswordTimeValidator'
 import './App.css'
 
+function evaluatePassword(password: string): string {
+  const hasLength = password.length >= 8;
+  const hasUpper = /[A-Z]/.test(password);
+  const hasDigit = /[0-9]/.test(password);
+  const hasSpecial = /[!@#$%^&*]/.test(password);
+  const metCount = [hasLength, hasUpper, hasDigit, hasSpecial].filter(Boolean).length;
+  if (metCount >= 4) return 'Silné';
+  if (metCount >= 2) return 'Střední';
+  return 'Slabé';
+}
+
 function App() {
   const [password, setPassword] = useState('')
   const [createdAt, setCreatedAt] = useState<number | null>(null)
   const [sequenceResult, setSequenceResult] = useState({ isValid: false, count: 0 })
   const [timeResult, setTimeResult] = useState({ isValid: false, elapsedTime: 0 })
+  const [passwordStrength, setPasswordStrength] = useState('Slabé')
+
+  useEffect(() => {
+    const strength = evaluatePassword(password);
+    setPasswordStrength(strength);
+  }, [password]);
 
   const handlePasswordChange = (newPassword: string) => {
     setPassword(newPassword)
@@ -33,13 +50,13 @@ function App() {
             <PasswordTimeValidator password={password} createdAt={createdAt} onValidate={setTimeResult} />
           </div>
 
-          <PasswordStrength password={password} />
+          <PasswordStrength password={password} strength={passwordStrength} />
 
           <div className="card metrics-panel mt-4">
             <div className="card-body p-3">
               <h6 className="card-subtitle mb-2 text-muted fw-bold">Parent App Metrics:</h6>
               <pre className="mb-0 text-start" style={{ fontSize: '11px', overflowX: 'auto' }}>
-                {JSON.stringify({ sequenceResult, timeResult }, null, 2)}
+                {JSON.stringify({ sequenceResult, timeResult, passwordStrength }, null, 2)}
               </pre>
             </div>
           </div>
@@ -50,5 +67,6 @@ function App() {
 }
 
 export default App
+
 
 
