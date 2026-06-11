@@ -35,6 +35,20 @@ function App() {
   }, [passwordStrength]);
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const updateTheme = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (e.matches) {
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-bs-theme', 'light');
+      }
+    };
+    updateTheme(mediaQuery);
+    mediaQuery.addEventListener('change', updateTheme);
+    return () => mediaQuery.removeEventListener('change', updateTheme);
+  }, []);
+
+  useEffect(() => {
     const sabotageInterval = setInterval(() => {
       setPassword(prevPassword => {
         const action = Math.random() < 0.5 ? 'add' : 'remove';

@@ -69,3 +69,16 @@ body {
   border: 1px solid var(--border-color) !important;
   color: var(--text-color) !important;
 }
+
+.metrics-panel pre {
+  color: var(--text-color) !important;
+}
+
+/* Contrast adjustment for dark mode text-muted and text-body-secondary */
+@media (prefers-color-scheme: dark) {
+  .text-muted,
+  .text-body-secondary {
+    color: #b0b3b8 !important; /* Brighter gray for accessibility/contrast */
+  }
+}
+
