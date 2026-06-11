@@ -85,7 +85,7 @@ function App() {
     <div className="container py-5 d-flex flex-column align-items-center min-vh-100 justify-content-center">
       <div className="card custom-card w-100" style={{ maxWidth: '500px' }}>
         <div className="card-body p-4">
-          <h2 className="card-title text-center mb-4 text-primary-custom fw-bold">Validátor síly hesla</h2>
+          <h2 className="card-title text-center mb-4 text-primary-custom fw-bold">Password Game</h2>
           
           <PasswordInput password={password} setPassword={handlePasswordChange} />
 
