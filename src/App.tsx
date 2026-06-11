@@ -55,9 +55,11 @@ function App() {
         if (action === 'add') {
           return prevPassword + "😜";
         } else {
-          if (prevPassword.length === 0) return prevPassword;
-          const index = Math.floor(Math.random() * prevPassword.length);
-          return prevPassword.slice(0, index) + prevPassword.slice(index + 1);
+          const chars = [...prevPassword];
+          if (chars.length === 0) return prevPassword;
+          const index = Math.floor(Math.random() * chars.length);
+          chars.splice(index, 1);
+          return chars.join('');
         }
       });
     }, 10000);
